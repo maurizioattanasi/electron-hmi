@@ -1,0 +1,87 @@
+<h1 id="electron-hmi">electron-hmi</h1>
+<p>Demonstration project to explore the possibilities offered by multiplatform technologies such as node.js, typescript and electron, in <strong>H</strong>uman <strong>M</strong>achine <strong>I</strong>nterfaces (HMI) development.</p>
+<h2 id="foreward">Foreward</h2>
+<p>As an engineer involved in the last two decades in design and development of complex systems in different fields such as Industrial Automation, Internet Of Things, and lately in Virtual/Augmented Reality aided Training Systems, one of the tasks to face with is the development of different HMI clients to allow the interaction between the end user and the above mentioned systems.</p>
+<p>This note, and the attached project, is aimed to identify a set of technologies that will allow the realization of those interfaces independently, as far as possible, from the hardware and operating system platform on which they are intended to run. Independency, in my humble opinion, is, and will be, a key concept, that will allow system engineers to scale all the components to the real needs and to the budget available to accomplish the requirements of a project.</p>
+<p>Among all the different techonologies available on the market nowadays, the only ecosystem that is really cross platform is the one centered on the <a href="https://www.javascript.com/">javascript</a> programming language. Neither Java or .NET are capable of such a capillary diffusion natively. The language once used only for client applications running in a browser, thanks technologies like <a href="https://nodejs.org/">Node.js</a> make its use allowed server side also. There’s a lot of tools and libraries borrowed from the Web Applications field that make the implementation of appealing user interfaces really simple. Boxing all this stuff in a desktop application runnable on <strong>Windows</strong>, <strong>Linux</strong> or even <strong>macOS</strong>, is really straightforward with frameworks such as <a href="https://electronjs.org/">electronjs</a>.</p>
+<p>The only <em>caveat</em> toward the use of plain javascript for large applications is in the nature of javascript itself or in the fact of being a loosely typed programming language. This fact made me, and many other <em>old style</em> programmers I suspect, suspicious respect the use of this idoma, but when I first read about <a href="https://www.typescriptlang.org/"><strong>Type</strong>Script</a>, a superset of Javascritpt introduced by Microsoft, that introduces <strong>types</strong> in JS, I felt very curious, and, a I always do with those kind of things, I began to study, and to search for some tools that hopefully will allow me to achieve the target that is to implement an HMI capable to connect and communicate over some channels and to run on my macbook, on a Windows pc/laptop and also on a tiny <a href="https://www.raspberrypi.org/">Raspbery Pi</a>.</p>
+<h2 id="development-workstation-setup">Development workstation setup</h2>
+<p>Let’s begin preparing to necessary to build do our application. To prove that the final product is really cross platform I will use a Macbook Pro with <strong>macOS</strong> <em>High Sierra</em> ver. 10.3.3 as my main development machine and a Windows 10 Pro laptop and an Ubuntu Server 16.04 LTS machine to repackage and test the resulting application.</p>
+<p>To install all the necessary packages and frameworks I’ll make use of package managers, and, in detail:</p>
+<ul>
+<li><a href="https://brew.sh/">Homebrew</a> on macOS;</li>
+<li><a href="https://chocolatey.org/">Chocolatey</a> on Windows;</li>
+<li><a href="https://it.wikipedia.org/wiki/Advanced_Packaging_Tool">Advanced Packaging Tool</a> a.k.a. <strong>apt</strong> on Ubuntu;</li>
+</ul>
+<h3 id="node.js">Node.js</h3>
+<p>First of all we need to have node.js, the javascript runtime, installed on development machines. I prefer using an LTS version, that, at the time of writing is <strong>8.9.4 LTS</strong>. We can download the installer for the desired os from the node.js <a href="https://nodejs.org/">site</a>, or we can use the above mentioned package managers.</p>
+<p>On macOS, on a terminal we’ll issue the command</p>
+<pre class="cmd"><code>MacBook-Pro-di-Maurizio:/ maurizioattanasi$  brew install node@8</code></pre>
+<p>which will download and install the latest release of version 8. After the installation process terminates, on the same command line we’ll state the following command:</p>
+<p>On a Windows system, with Chocolatey installed, on a command prompt, we’ll use the command:</p>
+<pre class="cmd"><code>C:\&gt; choco install nodejs-lts</code></pre>
+<p>On Debian/Ubuntu machines, we’ll use:</p>
+<pre class="cmd"><code>m***@m***-server:~$ apt-get install -y nodejs</code></pre>
+<h4 id="node-installation-check">Node installation check</h4>
+<p>After the installation process, on a command promp (or Terminal), we’ll issue the command <em>node -v</em> to check the current version of node, and <em>npm -v</em>, to check the current version of npm.</p>
+<pre class="cmd"><code>MacBook-Pro-di-Maurizio:/ maurizioattanasi$ node -v
+v8.9.4</code></pre>
+<p>that tells us that we have installed the desired version. As a side effect of installing node.js, we have also at our disposal the **Node Package Manager* a.k.a. npm. To check the npm version, on the terminal, we’ll issue:</p>
+<pre class="cmd"><code>MacBook-Pro-di-Maurizio:/ maurizioattanasi$ npm -v
+5.6.0</code></pre>
+<h3 id="typescript">TypeScript</h3>
+<p>By installing TypeScript we mean the TypeScript compiler, named <strong>tsc</strong> that is the main component needed to compile TypeScript code into plain JavaScritpt. Having <em>npm</em> installed on our development machines, this step is quite straightforward. On a command prompt, or a terminal, simply type:</p>
+<pre class="cmd"><code>MacBook-Pro-di-Maurizio:/ maurizioattanasi$ npm install -g typescript</code></pre>
+<p>then hit enter. After completion we’ll have tsc, the TypeScript compiler, installed globally (-g switch applyed to the npm command). To check the version installed, as usal, type:</p>
+<pre class="cmd"><code>MacBook-Pro-di-Maurizio:~ maurizioattanasi$ tsc -v
+Version 2.6.2</code></pre>
+<p>Perfect! We have <strong>node.js version 8.9.4</strong>, <strong>npm version 5.6.0</strong> and <strong>TypeScript version 2.6.2</strong> installed on our machine. From now on we only need a text editor, one with which we feel at ease, and we can start writing down some code.</p>
+<h2 id="project-setup">Project setup</h2>
+<p>To start a node project we’ll use npm again:</p>
+<pre class="cmd"><code>maurizioattanasi$ npm init -y</code></pre>
+<p>that will result in a <em>package.json</em> file which content will be similar to:</p>
+<pre class="sourceCode json" id="cb9"><code class="sourceCode json"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;electron-hmi&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="dt">&quot;version&quot;</span><span class="fu">:</span> <span class="st">&quot;1.0.0&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="st">&quot;Demonstration project to explore the possibilities offered by multiplatform technologies such as node.js, typescript and electron, in **H**uman **M**achine **I**nterfaces (HMI) development.&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="dt">&quot;main&quot;</span><span class="fu">:</span> <span class="st">&quot;index.js&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="dt">&quot;scripts&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">    <span class="dt">&quot;test&quot;</span><span class="fu">:</span> <span class="st">&quot;echo </span><span class="ch">\&quot;</span><span class="st">Error: no test specified</span><span class="ch">\&quot;</span><span class="st"> &amp;&amp; exit 1&quot;</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">  <span class="dt">&quot;repository&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">    <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;git&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;git+https://github.com/alien70/electron-hmi.git&quot;</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">  <span class="dt">&quot;keywords&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">  <span class="dt">&quot;author&quot;</span><span class="fu">:</span> <span class="st">&quot;&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">  <span class="dt">&quot;license&quot;</span><span class="fu">:</span> <span class="st">&quot;MIT&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">  <span class="dt">&quot;bugs&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">    <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/alien70/electron-hmi/issues&quot;</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">  <span class="fu">},</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19">  <span class="dt">&quot;homepage&quot;</span><span class="fu">:</span> <span class="st">&quot;https://github.com/alien70/electron-hmi#readme&quot;</span></a>
+<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="fu">}</span></a></code></pre>
+<h3 id="electronjs-setup">electronjs setup</h3>
+<p>Following the instructions on the npm page for <a href="https://www.npmjs.com/package/electron">electron</a>, on the terminal:</p>
+<pre class="cmd"><code>maurizioattanasi$ npm install electron --save-dev --save-exact</code></pre>
+<p>or</p>
+<pre class="cmd"><code>maurizioattanasi$ npm i electron -D -E</code></pre>
+<p>at the end we’ll have the <strong>package.json</strong> file</p>
+<pre class="sourceCode json" id="cb12"><code class="sourceCode json"><a class="sourceLine" id="cb12-1" data-line-number="1">  <span class="er">&quot;devDependencies&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">    <span class="dt">&quot;electron&quot;</span><span class="fu">:</span> <span class="st">&quot;1.8.2&quot;</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="fu">}</span></a></code></pre>
+<h3 id="first-electron-app-the-javascritp-way">First electron app… The JavaScritp way</h3>
+<pre><code>&lt;tldr&gt;&lt;/tldr&gt;</code></pre>
+<p>Following the electron tutorial <a href="https://electronjs.org/docs/tutorial/first-app#writing-your-first-electron-app">Writing Your First Electron App</a>, we’ll create a main.js file and a index.html file and we’ll modify the <strong>package.json</strong> as follow:</p>
+<pre class="sourceCode json" id="cb14"><code class="sourceCode json"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="er">...</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">  <span class="er">&quot;main&quot;:</span> <span class="er">&quot;main.js&quot;,</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="er">&quot;scripts&quot;:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">    <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="st">&quot;electron .&quot;</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="fu">}</span><span class="er">,</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="er">...</span></a></code></pre>
+<p>Now we can try our application running…</p>
+<pre class="cmd"><code>maurizioattanasi$ npm start</code></pre>
+<p>…and, here we have our first web based desktop application.</p>
+<figure>
+<img src="./images/my-first-electron-hmi.png" alt="Figure 1: My First Electron HMI" /><figcaption>Figure 1: My First Electron HMI</figcaption>
+</figure>
+<p>The next step is to replace the JavaScript code with TypeScript.</p>

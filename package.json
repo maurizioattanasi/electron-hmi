@@ -1,0 +1,23 @@
+{
+  "name": "electron-hmi",
+  "version": "1.0.0",
+  "description": "Demonstration project to explore the possibilities offered by multiplatform technologies such as node.js, typescript and electron, in **H**uman **M**achine **I**nterfaces (HMI) development.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alien70/electron-hmi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alien70/electron-hmi/issues"
+  },
+  "homepage": "https://github.com/alien70/electron-hmi#readme",
+  "devDependencies": {
+    "electron": "1.8.2"
+  }
+}
