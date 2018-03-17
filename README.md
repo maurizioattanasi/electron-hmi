@@ -136,7 +136,7 @@ at the end we'll have the **package.json** file
 
 ### First electron app... The JavaScritp way
 
-```
+``` html
 <tldr></tldr>
 ````
 
@@ -160,7 +160,58 @@ maurizioattanasi$ npm start
 
 ...and, here we have our first web based desktop application.
 
-
 ![Figure 1: My First Electron HMI](./images/my-first-electron-hmi.png)
 
 The next step is to replace the JavaScript code with TypeScript.
+
+### Let' add some TypeScript
+
+The first step is to rearrange our project in order to introduce TypeScript.
+
+- First thing first, we'll create a new folder named _src_ wich will contain our TypeScript source files;
+- Then let's rename our JavaScript files changing their extensions from _js_ to _ts_, and move them from the root folder to the _src_ folder. The content of the files will not change much, after all __TypeScript__ is a superset of __JavaScript__. Infact the only thing that we'll change are the _const_ and _let_ declarators that, in the spirit of the new idioma will become _var_;
+- Another change in the _main.ts_ file is the relative path of the _index.html_ file that will change into
+
+```typescript
+'../index.html'
+```
+
+- A major change is the introduction of the _tsconfig.json_ file in the root of our project which specifies the root files and the compiler options required to build the project.
+
+```json
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "noImplicitAny": false,
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "paths": {
+        "*": [
+          "node_modules/*"
+        ]
+      }
+    },
+    "include": [
+      "src/**/*"
+    ]
+  }
+```
+
+- Finally, we have to add some changes to our _packag.json_ file, and in particular, we'll add a _build_ script that will invoke our __TypeScript__ compiler _tsc_
+
+```json
+"build": "tsc",
+```
+
+and then we need to modify a little our _start_ script as follows:
+
+```json
+"start": "npm run build && electron ./dist/main.js"
+```
+
+so that, in a few words, it will initially compile our __TypeScript__ project, and then launch the  application passing to the __electron__ command the resulting _main.js_ file.
+
+![Figure 2 - Running the TypeScript version](./images/electron_run_terminal.png)
