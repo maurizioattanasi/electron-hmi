@@ -164,7 +164,6 @@ maurizioattanasi$ npm start
 
 The next step is to replace the JavaScript code with TypeScript.
 
-<<<<<<< HEAD
 ### Let' add some TypeScript
 
 The first step is to rearrange our project in order to introduce TypeScript.
@@ -216,15 +215,3 @@ and then we need to modify a little our _start_ script as follows:
 so that, in a few words, it will initially compile our __TypeScript__ project, and then launch the  application passing to the __electron__ command the resulting _main.js_ file.
 
 ![Figure 2 - Running the TypeScript version](./images/electron_run_terminal.png)
-=======
-### Introducing Typescript
-
-One of the goals introduced at the beginning of this note was to replace plain Javascript with the momre robust TypeScript. Let's change our prject in order to achieve this result applying the following steps
-
-1. Add TypeScript dependencies to the project
-
-``` cmd
-$ npm install typescript --save-dev
-```
-
->>>>>>> Modified .gitinore
