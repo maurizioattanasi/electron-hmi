@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/alien70/electron-hmi#readme",
   "devDependencies": {
-    "electron": "1.8.2"
+    "electron": "1.8.2",
+    "typescript": "^2.7.2"
   }
 }
