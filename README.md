@@ -215,3 +215,34 @@ and then we need to modify a little our _start_ script as follows:
 so that, in a few words, it will initially compile our __TypeScript__ project, and then launch the  application passing to the __electron__ command the resulting _main.js_ file.
 
 ![Figure 2 - Running the TypeScript version](./images/electron_run_terminal.png)
+
+## And finally Angular + Mqtt
+
+To achieve the desired result, we will rearrange our project in order to display some dynamic readings.
+
+## Let's go Angular
+
+Let's introduce [Angular](https://angular.io/) framework to add order and development speed to our simple project, and we'll do this using [Angular CLI](https://cli.angular.io/).
+
+First thing first, we need to install the CLI if we haven't done yet.
+
+``` cmd
+> npm install -g @angular/cli
+```
+
+After this step, we'll check the installed version of the cli issuing the command:
+
+``` cmd
+> ng -v
+```
+
+![NG Version](./images/ng-version.png)
+
+### Crete the angular project
+
+To create our angular project using the installed CLI, we'll use the command
+
+``` cmd
+> ng new electron-hmi
+```
+
