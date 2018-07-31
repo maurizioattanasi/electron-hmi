@@ -1,5 +1,9 @@
 # Lock files
+package-lock.json
 *lock.json
+
+#dist folder
+dist
 
 # Logs
 logs
