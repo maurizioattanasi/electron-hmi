@@ -258,7 +258,7 @@ Opening our favourite browser on [http://localhost:4200/]() we will see our bran
 
 Since our main goal is to implement a desktop application, we'll add electron to our project the same way we did in our previous project.
 
-The only _caveat_ we have to attention to let the [Electron]() _main.js_ application scritp point to the right [index.hmtl]() file.
+The only _caveat_ we have to attention to let the [Electron]() _main.js_ application script point to the right [index.hmtl]() file.
 
 In our previous implementations, we used the following piece of code to pass the _url_ to the electron application script:
 
@@ -298,7 +298,7 @@ to
 ...            
 ```
 
-To run aour new _electron_ app we need to add the appropriate scripts to the _package.json_ configuration file
+To run our new _electron_ app we need to add the appropriate scripts to the _package.json_ configuration file
 
 ``` json
   "main": "main.js",
@@ -311,7 +311,7 @@ To run aour new _electron_ app we need to add the appropriate scripts to the _pa
 
 that will build our _angular_ SPA application into our _dist_ folder, and then run electron.
 
-Running the script
+Running the command
 
 ``` cmd
 > npm run electron
