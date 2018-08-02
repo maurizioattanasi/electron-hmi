@@ -215,3 +215,122 @@ and then we need to modify a little our _start_ script as follows:
 so that, in a few words, it will initially compile our __TypeScript__ project, and then launch the  application passing to the __electron__ command the resulting _main.js_ file.
 
 ![Figure 2 - Running the TypeScript version](./images/electron_run_terminal.png)
+
+## And finally Angular + Mqtt
+
+To achieve the desired result, we will rearrange our project in order to display some dynamic readings.
+
+## Let's go Angular
+
+Let's introduce [Angular](https://angular.io/) framework to add order and development speed to our simple project, and we'll do this using [Angular CLI](https://cli.angular.io/).
+
+First thing first, we need to install the CLI if we haven't done yet.
+
+``` cmd
+> npm install -g @angular/cli
+```
+
+After this step, we'll check the installed version of the cli issuing the command:
+
+``` cmd
+> ng -v
+```
+
+![NG Version](./images/ng-version.png)
+
+### Crete the angular project
+
+To create our angular project using the installed CLI, we'll use the command
+
+``` cmd
+> ng new electron-hmi
+```
+
+At the end of the process, step into the newly created folder and try the result typing the command
+
+``` cmd
+> ng serve
+```
+
+Opening our favourite browser on [http://localhost:4200/]() we will see our brand new Angular single page application running.
+
+### Electron
+
+Since our main goal is to implement a desktop application, we'll add electron to our project the same way we did in our previous project.
+
+The only _caveat_ we have to attention to let the [Electron]() _main.js_ application script point to the right [index.hmtl]() file.
+
+In our previous implementations, we used the following piece of code to pass the _url_ to the electron application script:
+
+``` javascript
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+```
+
+To maintain this path, we have to the following change in our _angular.json_ configuration file.
+
+``` json
+...
+
+ "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/electron-hmi",
+            
+...            
+```
+
+to
+
+``` json
+...
+
+ "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+
+...            
+```
+
+To run our new _electron_ app we need to add the appropriate scripts to the _package.json_ configuration file
+
+``` json
+  "main": "main.js",
+  "scripts": {
+    ...
+    "electron": "ng build && electron .",
+    "electron-aot": "ng build --aot && electron ."
+  },
+```
+
+that will build our _angular_ SPA application into our _dist_ folder, and then run electron.
+
+Running the command
+
+``` cmd
+> npm run electron
+```
+
+will open our desktop application.
+
+[![Electron Application](./images/mqtt-electron.png)](https://youtu.be/gsuCieX2yk8)
+
+__Note:__ the image above is linked to a youtube video
+
+### Live data streaming
+
+- To add some live data I made use of a public __mqtt__ reading available at [MQTT Dashboard](http://www.mqtt-dashboard.com/)
+
+[![MQTT Dashboard](./images/mqtt-dashboard.png)](http://www.mqtt-dashboard.com/)
+
+- To stream the data into our angular application, I used [ngx-mqtt](https://www.npmjs.com/package/ngx-mqtt) node package;
+
+- The gauge is implemented [ngx-gauge](https://www.npmjs.com/package/ngx-gauge) node module;
+
+That's all for now.
