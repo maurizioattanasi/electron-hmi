@@ -321,3 +321,16 @@ will open our desktop application.
 
 [![Electron Application](./images/mqtt-electron.png)](https://youtu.be/gsuCieX2yk8)
 
+__Note:__ the image above is linked to a youtube video
+
+### Live data streaming
+
+- To add some live data I made use of a public __mqtt__ reading available at [MQTT Dashboard](http://www.mqtt-dashboard.com/)
+
+[![MQTT Dashboard](./images/mqtt-dashboard.png)](http://www.mqtt-dashboard.com/)
+
+- To stream the data into our angular application, I used [ngx-mqtt](https://www.npmjs.com/package/ngx-mqtt) node package;
+
+- The gauge is implemented [ngx-gauge](https://www.npmjs.com/package/ngx-gauge) node module;
+
+That's all for now.
