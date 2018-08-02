@@ -246,3 +246,78 @@ To create our angular project using the installed CLI, we'll use the command
 > ng new electron-hmi
 ```
 
+At the end of the process, step into the newly created folder and try the result typing the command
+
+``` cmd
+> ng serve
+```
+
+Opening our favourite browser on [http://localhost:4200/]() we will see our brand new Angular single page application running.
+
+### Electron
+
+Since our main goal is to implement a desktop application, we'll add electron to our project the same way we did in our previous project.
+
+The only _caveat_ we have to attention to let the [Electron]() _main.js_ application scritp point to the right [index.hmtl]() file.
+
+In our previous implementations, we used the following piece of code to pass the _url_ to the electron application script:
+
+``` javascript
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'dist', 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+```
+
+To maintain this path, we have to the following change in our _angular.json_ configuration file.
+
+``` json
+...
+
+ "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/electron-hmi",
+            
+...            
+```
+
+to
+
+``` json
+...
+
+ "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist",
+
+...            
+```
+
+To run aour new _electron_ app we need to add the appropriate scripts to the _package.json_ configuration file
+
+``` json
+  "main": "main.js",
+  "scripts": {
+    ...
+    "electron": "ng build && electron .",
+    "electron-aot": "ng build --aot && electron ."
+  },
+```
+
+that will build our _angular_ SPA application into our _dist_ folder, and then run electron.
+
+Running the script
+
+``` cmd
+> npm run electron
+```
+
+will open our desktop application.
+
+[![Electron Application](./images/mqtt-electron.png)](https://youtu.be/gsuCieX2yk8)
+
