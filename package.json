@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
-    "electron-aot": "ng build --aot && electron ."
+    "electron-aot": "ng build --aot && electron .",
+    "dist": "build"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +30,7 @@
     "core-js": "^2.5.4",
     "ngx-gauge": "^1.0.0-beta.4",
     "ngx-mqtt": "^6.4.1",
+    "npm": "^6.4.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
@@ -42,6 +44,7 @@
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "electron": "^2.0.5",
+    "electron-builder": "^20.28.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.1",
@@ -53,5 +56,21 @@
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
     "typescript": "~2.7.2"
+  },
+  "build": {
+    "appId": "com.maurizioattanasi.electron-hmi",
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/icons/mac/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icons/win/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "snap"
+      ]
+    }
   }
 }

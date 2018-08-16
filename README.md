@@ -333,4 +333,62 @@ __Note:__ the image above is linked to a youtube video
 
 - The gauge is implemented [ngx-gauge](https://www.npmjs.com/package/ngx-gauge) node module;
 
+### Pack and distribute
+
+Like any professional application it would be nice to have an automated installer to package and distribute our work. Electron framework comes to help for this need. There are some alternatives available but the one we will test is [electron-builder](https://www.electron.build/).
+
+First of all we need to install _electron-builder_ to our project. Because we're using npm as the package manager for our project, in a terminal we'll issue the command
+
+
+``` npm
+> npm install --save-dev electron-builder
+```
+
+After that we need to add some sections to our _package.json_ confinguration file.
+
+```json
+...
+
+  "build": {
+    "appId": "com.maurizioattanasi.electron-hmi",
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/icons/mac/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icons/win/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "snap"
+      ]
+    }
+  }
+
+...
+```
+
+and a _dist_ command in the script section to build and distribute the application itself
+
+```json
+...
+
+    "electron": "ng build && electron .",
+    "electron-aot": "ng build --aot && electron .",
+    "dist": "build"
+
+...
+
+````
+
+As it can be seen in the _build_ section we have three subsections _win_, _mac_ and _linux_ meaning that, depending on the platform on which we're developing our app we can have an appropriate installer.
+
+
+![electron-builder-output](./images/electron-builder_mac.png)
+
+
+The image above is the output on my macbook resulting in the _electron-hmi-0.0.1.dmg_ installer that can be found in the _dist_ folder of our project.
+
+
 That's all for now.
